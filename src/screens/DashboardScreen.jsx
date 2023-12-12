@@ -1,9 +1,24 @@
-import { View, Text, Image, ScrollView } from 'react-native';
+import { useContext, useState } from 'react';
+import { View, Text, Image, ScrollView, TouchableHighlight } from 'react-native';
 
 import AndroidSafeView from '../components/AndroidSafeView';
+import { BluetoothContext } from '../context/Bluetooth.context';
+import Button from '../components/Button';
 
 export default function DashboardScreen() {
-	const ssuetLogo = require('../../assets/images/ssuet-logo.png');
+	const [scanning, setScanning] = useState(false);
+	const { handleStartScanning } = useContext(BluetoothContext);
+
+	const handleStartScanningLocal = async () => {
+		try {
+			setScanning(true);
+			await handleStartScanning();
+		} catch (err) {
+		} finally {
+			setScanning(false);
+		}
+	};
+
 	return (
 		<AndroidSafeView>
 			<ScrollView className='w-full h-full bg-[#F9F9F9]'>
@@ -11,7 +26,7 @@ export default function DashboardScreen() {
 					{/* Account Card component start */}
 					<View className='flex justify-center items-center bg-white rounded-xl w-full h-60 p-3'>
 						<Image
-							source={ssuetLogo}
+							source={require('../../assets/images/ssuet-logo.png')}
 							resizeMode='contain'
 							className='w-2/4 h-2/4 drop-shadow-2xl'
 						/>
@@ -104,6 +119,13 @@ export default function DashboardScreen() {
 								<View className='w-full h-[55%] bg-[#333D55]'></View>
 							</View>
 						</View>
+					</View>
+					<View className='w-full bg-white rounded-xl p-4 mt-10 h-[10rem]'>
+						<Button
+							title='Scan Nearby Devices'
+							onPress={handleStartScanningLocal}
+							loading={scanning}
+						/>
 					</View>
 				</View>
 			</ScrollView>
