@@ -44,7 +44,7 @@ export default function WelcomeScreen({ navigation }) {
           <PrimaryButton
             title={"Get Started"}
             handlePress={() => {
-              redirectToDashboardScreen(navigation);
+              redirectToLoginScreen(navigation);
             }}
           />
           <View className="flex flex-row justify-center">
