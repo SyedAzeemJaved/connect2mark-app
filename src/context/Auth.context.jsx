@@ -1,4 +1,10 @@
-import { createContext, useCallback, useEffect, useMemo, useState } from 'react';
+import {
+    createContext,
+    useCallback,
+    useEffect,
+    useMemo,
+    useState,
+} from 'react';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -7,106 +13,110 @@ import { api } from '../common';
 export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-	const headers = new Headers();
+    const headers = new Headers();
 
-	const [_user, setUser] = useState({
-		isAuthenticated: null,
-		email: null,
-		imageURI: null,
-		name: null,
-		user_role: null,
-		id: null,
-		token: null,
-	});
+    const [_user, setUser] = useState({
+        full_name: '',
+        email: '',
+        id: 0,
+        is_admin: false,
+        additional_details: {
+            phone: null,
+            department: 'not_specified',
+            designation: 'not_specified',
+        },
+        created_at_in_utc: '',
+        updated_at_in_utc: null,
 
-	const user = useMemo(() => _user, [_user]);
+        isAuthenticated: false,
+        token: null,
+    });
 
-	useEffect(() => {
-		(async () => {
-			try {
-				const token = await AsyncStorage.getItem('token');
-				if (token) {
-					headers.append('Authorization', `Bearer ${token}`);
-					headers.append('accept', 'application/json');
+    const user = useMemo(() => _user, [_user]);
 
-					const apiResponse = await fetch(api.USERME, {
-						method: 'GET',
-						headers,
-					});
+    useEffect(() => {
+        (async () => {
+            try {
+                const token = await AsyncStorage.getItem('token');
+                if (token) {
+                    headers.append('Authorization', `Bearer ${token}`);
+                    headers.append('accept', 'application/json');
 
-					const res = await apiResponse.json();
-					if (!apiResponse.ok) throw new Error(res?.detail);
+                    const apiResponse = await fetch(api.USERME, {
+                        method: 'GET',
+                        headers,
+                    });
 
-					setUser({
-						isAuthenticated: !!res?.email,
-						email: res?.email,
-						imageURI: null,
-						name: res?.name,
-						user_role: res?.user_role,
-						id: res?.id,
-						token,
-					});
+                    const res = await apiResponse.json();
 
-					return;
-				}
-				setUser({
-					isAuthenticated: false,
-					email: null,
-					imageURI: null,
-					name: null,
-					user_role: null,
-					id: null,
-				});
-			} catch (err) {
-				setUser({
-					isAuthenticated: false,
-					email: null,
-					imageURI: null,
-					name: null,
-					user_role: null,
-					id: null,
-				});
-			}
-		})();
-	}, []);
+                    if (!apiResponse.ok) throw new Error(res?.detail);
 
-	const handleUser = useCallback(props => {
-		setUser(props);
-	}, []);
+                    setUser({
+                        full_name: res?.full_name,
+                        email: res?.email,
+                        id: res?.id,
+                        is_admin: res?.is_admin,
+                        additional_details: {
+                            phone: res?.additional_details?.phone,
+                            department: res?.additional_details?.department,
+                            designation: res?.additional_details?.designation,
+                        },
+                        created_at_in_utc: res?.created_at_in_utc,
+                        updated_at_in_utc: res?.updated_at_in_utc,
 
-	const setToken = useCallback(async token => {
-		setUser(prev => ({
-			...prev,
-			token,
-		}));
-		await AsyncStorage.setItem('token', token);
-	}, []);
+                        isAuthenticated: true,
+                        token,
+                    });
 
-	const handleLogout = useCallback(() => {
-		setUser({
-			isAuthenticated: false,
-			email: null,
-			imageURI: null,
-			name: null,
-			user_role: null,
-			id: null,
-			token: null,
-		});
-		AsyncStorage.removeItem('token')
-			.then(() => {
-				console.log('token removed');
-			})
-			.catch(() => {
-				console.log('error occured during logout');
-			});
-	}, []);
+                    return;
+                }
+            } catch (err) {
+                // Syed Azeem Javed
+                // fireToast(
+                //     'There seems to be a problem',
+                //     (typeof err?.message === 'string' && err?.message) ||
+                //       'Something went wrong',
+                //     3,
+                //   );
+            }
+        })();
+    }, []);
 
-	const value = {
-		user,
-		handleLogout,
-		handleUser,
-		setToken,
-	};
+    const handleUser = useCallback((props) => {
+        setUser(props);
+    }, []);
 
-	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+    const setToken = useCallback(async (token) => {
+        setUser((prev) => ({
+            ...prev,
+            token,
+        }));
+        await AsyncStorage.setItem('token', token);
+    }, []);
+
+    const handleLogout = useCallback(() => {
+        setUser({
+            isAuthenticated: false,
+            email: null,
+            imageURI: null,
+            name: null,
+            user_role: null,
+            id: null,
+            token: null,
+        });
+        AsyncStorage.removeItem('token').catch(() => {
+            console.log('error occured during logout');
+        });
+    }, []);
+
+    const value = {
+        user,
+        handleLogout,
+        handleUser,
+        setToken,
+    };
+
+    return (
+        <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+    );
 };

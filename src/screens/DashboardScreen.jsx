@@ -1,134 +1,132 @@
 import { useContext, useState } from 'react';
-import { View, Text, Image, ScrollView, TouchableHighlight } from 'react-native';
+import { View, Text, Image, ScrollView } from 'react-native';
+
+import { AuthContext } from '../context/Auth.context';
 
 import AndroidSafeView from '../components/AndroidSafeView';
-import { BluetoothContext } from '../context/Bluetooth.context';
-import Button from '../components/Button';
 
 export default function DashboardScreen() {
-	const [scanning, setScanning] = useState(false);
-	const { handleStartScanning } = useContext(BluetoothContext);
+    const { user } = useContext(AuthContext);
 
-	const handleStartScanningLocal = async () => {
-		try {
-			setScanning(true);
-			await handleStartScanning();
-		} catch (err) {
-		} finally {
-			setScanning(false);
-		}
-	};
+    return (
+        <AndroidSafeView>
+            <ScrollView className="h-full w-full bg-[#F9F9F9]">
+                <View className="mt-2 flex w-full flex-col items-center px-5 py-10">
+                    {/* Account Card component start */}
+                    <View className="flex h-60 w-full flex-col items-center justify-center rounded-xl bg-white p-3">
+                        <Image
+                            source={require('../../assets/images/ssuet-logo.png')}
+                            resizeMode="contain"
+                            className="h-24 w-24 drop-shadow-2xl"
+                        />
+                        <Text className="pt-2 font-poppins text-[24px] font-semibold">
+                            {user.full_name}
+                        </Text>
+                        <Text className="-mt-3 font-poppins text-[16px] font-light text-[#606060]">
+                            {user?.additional_details?.department ?? 'Teacher'}
+                        </Text>
+                    </View>
+                    <View className="mt-8 flex w-full flex-row items-center justify-between">
+                        <View className="flex h-52 w-[45%] flex-col justify-between rounded-xl  bg-white  p-4">
+                            <View>
+                                <Text className="text-[24px] font-semibold">
+                                    Today
+                                </Text>
+                                <View className="mt-1 h-[2px] w-full rounded-full bg-zinc-600" />
+                            </View>
+                            <View className="relative mt-4 flex w-full flex-col items-center justify-center">
+                                <Image
+                                    source={require('../../assets/images/Circle.png')}
+                                    resizeMode="cover"
+                                    className="h-20 w-20"
+                                />
+                                <View className="absolute">
+                                    <Text className="text-lg font-bold text-zinc-600">
+                                        04
+                                    </Text>
+                                </View>
+                            </View>
+                            <View className="mt-2 flex w-full items-center">
+                                <Text className="font-semibold text-zinc-600">
+                                    3 Out of 4
+                                </Text>
+                            </View>
+                        </View>
 
-	return (
-		<AndroidSafeView>
-			<ScrollView className='w-full h-full bg-[#F9F9F9]'>
-				<View className='items-center py-10 mt-2 w-full flex flex-col px-5'>
-					{/* Account Card component start */}
-					<View className='flex justify-center items-center bg-white rounded-xl w-full h-60 p-3'>
-						<Image
-							source={require('../../assets/images/ssuet-logo.png')}
-							resizeMode='contain'
-							className='w-2/4 h-2/4 drop-shadow-2xl'
-						/>
-						<Text className='font-poppins font-semibold text-[24px] pt-2'>
-							Wania Khan
-						</Text>
-						<Text className='font-poppins font-light text-[#606060] text-[16px] -mt-3'>
-							Computer Science Teacher
-						</Text>
-					</View>
-					<View className='w-full flex flex-row items-center justify-between mt-8'>
-						<View className='flex p-4 bg-white rounded-xl w-[45%] h-52  flex-col  justify-between'>
-							<View>
-								<Text className='font-semibold text-[24px]'>Today</Text>
-								<View className='w-full h-[2px] bg-zinc-600 rounded-full mt-1' />
-							</View>
-							<View className='w-full flex items-center justify-center mt-4 relative flex-col'>
-								<Image
-									source={require('../../assets/images/Circle.png')}
-									resizeMode='cover'
-									className='w-20 h-20'
-								/>
-								<View className='absolute'>
-									<Text className='font-bold text-lg text-zinc-600'>03</Text>
-								</View>
-							</View>
-							<View className='w-full flex mt-2 items-center'>
-								<Text className='text-zinc-600 font-semibold'>3 Out of 4</Text>
-							</View>
-						</View>
-
-						<View className='flex items-center bg-white rounded-xl w-[45%] h-52 p-4'>
-							<View className='w-full'>
-								<Text className='font-semibold text-[24px]'>Next Class</Text>
-								<View className='w-full h-[2px] bg-zinc-600 rounded-full mt-1' />
-							</View>
-							<View className='w-full mt-4 flex flex-col'>
-								<Text className='font-semibold text-zinc-700'>
-									Object Oriented Programming
-								</Text>
-								<View className='flex flex-row items-center mt-2'>
-									<Image
-										className='w-4 h-4'
-										resizeMode='contain'
-										source={require('../../assets/images/location.png')}
-									/>
-									<Text className='text-zinc-700 ml-2'>Room GT-05</Text>
-								</View>
-								<View className='flex flex-row items-center mt-2'>
-									<Image
-										className='w-4 h-4'
-										resizeMode='contain'
-										source={require('../../assets/images/time.png')}
-									/>
-									<Text className='text-zinc-700 ml-2'>9:00 am - 11:00 am</Text>
-								</View>
-							</View>
-						</View>
-					</View>
-					<View className='w-full bg-white flex flex-col mt-10 h-[40rem] rounded-xl p-4'>
-						<View className='w-full'>
-							<Text className='font-semibold text-[24px]'>Attendance</Text>
-							<View className='w-full h-[2px] bg-zinc-600 rounded-full mt-1' />
-						</View>
-						<View className='w-full flex flex-row items-center justify-between mt-4'>
-							<View className='w-1/2 flex h-12 rounded-md border-2 border-gray-200  items-center flex-row px-2 justify-between'>
-								<Text className='font-semibold text-zinc-600'>August</Text>
-								<Text className='text-xl rotate-90'>{'>'}</Text>
-							</View>
-							<View className='flex flex-row items-center gap-2'>
-								<View className='w-10 h-10 rounded-full border-2 border-gray-200 items-center justify-center'>
-									<Text className='text-xl'>{'<'}</Text>
-								</View>
-								<View className='w-10 h-10 rounded-full border-2 border-gray-200 items-center justify-center'>
-									<Text className='text-xl'>{'>'}</Text>
-								</View>
-							</View>
-						</View>
-						<View className='w-full flex flex-row items-center mt-4'>
-							<View className='w-20 h-60 bg-zinc-200 flex flex-col justify-end'>
-								<View className='w-full h-[80%] bg-[#333D55]'></View>
-							</View>
-							<View className='w-20 h-60 bg-zinc-200 flex flex-col justify-end ml-2'>
-								<View className='w-full h-[70%] bg-[#333D55]'></View>
-							</View>
-							<View className='w-20 h-60 bg-zinc-200 flex flex-col justify-end ml-2'>
-								<View className='w-full h-[50%] bg-[#333D55]'></View>
-							</View>
-							<View className='w-20 h-60 bg-zinc-200 flex flex-col justify-end ml-2'>
-								<View className='w-full h-[55%] bg-[#333D55]'></View>
-							</View>
-						</View>
-					</View>
-					<View className='w-full bg-white rounded-xl p-4 mt-10 h-[10rem]'>
-						<Button
-							title='Scan Nearby Devices'
-							onPress={handleStartScanningLocal}
-							loading={scanning}
-						/>
-					</View>
-				</View>
-			</ScrollView>
-		</AndroidSafeView>
-	);
+                        <View className="flex h-52 w-[45%] items-center rounded-xl bg-white p-4">
+                            <View className="w-full">
+                                <Text className="text-[24px] font-semibold">
+                                    Next Class
+                                </Text>
+                                <View className="mt-1 h-[2px] w-full rounded-full bg-zinc-600" />
+                            </View>
+                            <View className="mt-4 flex w-full flex-col">
+                                <Text className="font-semibold text-zinc-700">
+                                    Object Oriented Programming
+                                </Text>
+                                <View className="mt-2 flex flex-row items-center">
+                                    <Image
+                                        className="h-4 w-4"
+                                        resizeMode="contain"
+                                        source={require('../../assets/images/location.png')}
+                                    />
+                                    <Text className="ml-2 text-zinc-700">
+                                        Room GT-05
+                                    </Text>
+                                </View>
+                                <View className="mt-2 flex flex-row items-center">
+                                    <Image
+                                        className="h-4 w-4"
+                                        resizeMode="contain"
+                                        source={require('../../assets/images/time.png')}
+                                    />
+                                    <Text className="ml-2 text-zinc-700">
+                                        9:00 am - 11:00 am
+                                    </Text>
+                                </View>
+                            </View>
+                        </View>
+                    </View>
+                    <View className="mt-10 flex h-[40rem] w-full flex-col rounded-xl bg-white p-4">
+                        <View className="w-full">
+                            <Text className="text-[24px] font-semibold">
+                                Attendance
+                            </Text>
+                            <View className="mt-1 h-[2px] w-full rounded-full bg-zinc-600" />
+                        </View>
+                        <View className="mt-4 flex w-full flex-row items-center justify-between">
+                            <View className="flex h-12 w-1/2 flex-row items-center justify-between  rounded-md border-2 border-gray-200 px-2">
+                                <Text className="font-semibold text-zinc-600">
+                                    August
+                                </Text>
+                                <Text className="rotate-90 text-xl">{'>'}</Text>
+                            </View>
+                            <View className="flex flex-row items-center gap-2">
+                                <View className="h-10 w-10 items-center justify-center rounded-full border-2 border-gray-200">
+                                    <Text className="text-xl">{'<'}</Text>
+                                </View>
+                                <View className="h-10 w-10 items-center justify-center rounded-full border-2 border-gray-200">
+                                    <Text className="text-xl">{'>'}</Text>
+                                </View>
+                            </View>
+                        </View>
+                        <View className="mt-4 flex w-full flex-row items-center">
+                            <View className="flex h-60 w-20 flex-col justify-end bg-zinc-200">
+                                <View className="h-[10%] w-full bg-[#333D55]"></View>
+                            </View>
+                            <View className="ml-2 flex h-60 w-20 flex-col justify-end bg-zinc-200">
+                                <View className="h-[20%] w-full bg-[#333D55]"></View>
+                            </View>
+                            <View className="ml-2 flex h-60 w-20 flex-col justify-end bg-zinc-200">
+                                <View className="h-[30%] w-full bg-[#333D55]"></View>
+                            </View>
+                            <View className="ml-2 flex h-60 w-20 flex-col justify-end bg-zinc-200">
+                                <View className="h-[45%] w-full bg-[#333D55]"></View>
+                            </View>
+                        </View>
+                    </View>
+                </View>
+            </ScrollView>
+        </AndroidSafeView>
+    );
 }
