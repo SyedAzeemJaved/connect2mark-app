@@ -1,17 +1,43 @@
-import { useContext, useState } from 'react';
-import { View, Text, Image, ScrollView } from 'react-native';
+import { useContext, useState, useEffect } from 'react';
+import {
+    View,
+    Text,
+    Image,
+    ScrollView,
+    TouchableHighlight,
+} from 'react-native';
 
-import { AuthContext } from '../context/Auth.context';
+import { AuthContext } from '@contexts';
+import { UserContextProps } from '@types';
 
-import AndroidSafeView from '../components/AndroidSafeView';
+import { AndroidSafeView, PrimaryButton } from '@components';
 
-export default function DashboardScreen() {
-    const { user } = useContext(AuthContext);
+import * as Location from 'expo-location';
+
+export const DashboardScreen = () => {
+    const { user, handleLogout } = useContext(AuthContext) as UserContextProps;
+
+    // const [location, setLocation] = useState(null);
+    // const [errorMsg, setErrorMsg] = useState(null);
+
+    // useEffect(() => {
+    //     (async () => {
+    //         let { status } = await Location.requestForegroundPermissionsAsync();
+    //         if (status !== 'granted') {
+    //             setErrorMsg('Permission to access location was denied');
+    //             return;
+    //         }
+
+    //         let location = await Location.getCurrentPositionAsync({});
+    //         setLocation(location);
+    //     })();
+    // }, []);
+    // console.log(location);
 
     return (
         <AndroidSafeView>
             <ScrollView className="h-full w-full bg-[#F9F9F9]">
-                <View className="mt-2 flex w-full flex-col items-center px-5 py-10">
+                <View className="flex w-full flex-col items-center px-5 py-5">
                     {/* Account Card component start */}
                     <View className="flex h-60 w-full flex-col items-center justify-center rounded-xl bg-white p-3">
                         <Image
@@ -125,8 +151,14 @@ export default function DashboardScreen() {
                             </View>
                         </View>
                     </View>
+                    <View className="w-full">
+                        <PrimaryButton
+                            title={'Logout'}
+                            handlePress={handleLogout}
+                        />
+                    </View>
                 </View>
             </ScrollView>
         </AndroidSafeView>
     );
-}
+};
