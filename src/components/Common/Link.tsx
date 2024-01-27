@@ -8,7 +8,7 @@ type Props = {
 export const Link = ({ title, handlePress }: Props) => {
     return (
         <Pressable onPress={handlePress}>
-            <Text className="text-center text-[16px] font-bold text-primary">
+            <Text className="text-sm font-semibold text-purple-800">
                 {title}
             </Text>
         </Pressable>

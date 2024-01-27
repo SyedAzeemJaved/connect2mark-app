@@ -11,11 +11,8 @@ import {
     TextBox,
     PrimaryButton,
     ShowToast,
+    Logo,
 } from '@components';
-
-import LoginVector from '../vectors/LoginVector';
-
-const textClasses = 'font-poppins text-primary text-lg mt-5';
 
 export const LoginScreen = () => {
     const { handleUser } = useContext(AuthContext) as UserContextProps;
@@ -96,6 +93,7 @@ export const LoginScreen = () => {
                 created_at_in_utc: response?.user?.created_at_in_utc,
                 updated_at_in_utc: response?.user?.updated_at_in_utc,
 
+                hasSeenWelcome: false,
                 isAuthenticated: true,
                 token: response?.access_token,
             });
@@ -118,35 +116,31 @@ export const LoginScreen = () => {
 
     return (
         <AndroidSafeView>
-            <View className="h-full w-full bg-white pt-5">
-                <LoginVector width={'100%'} height={'50%'} />
-                <View className="ml-6 mr-6 flex gap-y-4">
-                    <Text className={textClasses}>Email</Text>
-                    <TextBox
-                        inputName={'email'}
-                        placeholder={'email@connect2mark.com'}
-                        iconName={'email'}
-                        handleChange={setValues}
-                        keyboardType="email-address"
-                        autoCapitalize="none"
-                    />
-                    <Text className={textClasses}>Password</Text>
-                    <TextBox
-                        inputName={'password'}
-                        placeholder={'Enter your password here'}
-                        iconName={'security'}
-                        handleChange={setValues}
-                        secureTextEntry={true}
-                    />
-                </View>
+            <View className="flex h-full w-full flex-col justify-around p-6">
+                <Logo />
+                <TextBox
+                    label="Email"
+                    inputName={'email'}
+                    placeholder={'email@connect2mark.com'}
+                    iconName={'email'}
+                    handleChange={setValues}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                />
+                <TextBox
+                    label="Password"
+                    inputName={'password'}
+                    placeholder={'Enter your password here'}
+                    iconName={'security'}
+                    handleChange={setValues}
+                    secureTextEntry={true}
+                />
                 {!isKeyboardOpen && (
-                    <View className="absolute bottom-10 w-full">
+                    <View className="">
                         <PrimaryButton title={'Login'} handlePress={onPress} />
-                        <View className="flex flex-row justify-center">
-                            <Text className="mt-2 text-center text-[12px] text-black">
-                                Contact your admin if you do not have an account
-                            </Text>
-                        </View>
+                        <Text className="mt-2 text-center text-xs">
+                            Contact your admin if you do not have an account
+                        </Text>
                     </View>
                 )}
             </View>

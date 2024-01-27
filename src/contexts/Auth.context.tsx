@@ -29,6 +29,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         created_at_in_utc: '',
         updated_at_in_utc: null,
 
+        hasSeenWelcome: false,
         isAuthenticated: false,
         token: null,
     });
@@ -66,6 +67,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                         created_at_in_utc: res?.created_at_in_utc,
                         updated_at_in_utc: res?.updated_at_in_utc,
 
+                        hasSeenWelcome: false,
                         isAuthenticated: true,
                         token,
                     });
@@ -88,6 +90,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                         },
                         created_at_in_utc: '',
                         updated_at_in_utc: null,
+
+                        hasSeenWelcome: false,
                         isAuthenticated: false,
                         token: null,
                     });
@@ -120,8 +124,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                     designation: 'not_specified',
                     department: 'not_specified',
                 },
+
+                hasSeenWelcome: false,
                 created_at_in_utc: '',
                 updated_at_in_utc: null,
+
                 isAuthenticated: false,
                 token: null,
             });

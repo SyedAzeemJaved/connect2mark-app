@@ -8,7 +8,8 @@ export const AndroidSafeView = ({
     return (
         <SafeAreaView
             style={{
-                paddingTop:
+                backgroundColor: '#F9F9F9',
+                marginTop:
                     Platform.OS === 'android' ? StatusBar.currentHeight : 0,
             }}
         >
