@@ -116,27 +116,31 @@ export const LoginScreen = () => {
 
     return (
         <AndroidSafeView>
-            <View className="flex h-full w-full flex-col justify-around p-6">
+            <View className="flex h-full w-full flex-col items-center p-6">
                 <Logo />
-                <TextBox
-                    label="Email"
-                    inputName={'email'}
-                    placeholder={'email@connect2mark.com'}
-                    iconName={'email'}
-                    handleChange={setValues}
-                    keyboardType="email-address"
-                    autoCapitalize="none"
-                />
-                <TextBox
-                    label="Password"
-                    inputName={'password'}
-                    placeholder={'Enter your password here'}
-                    iconName={'security'}
-                    handleChange={setValues}
-                    secureTextEntry={true}
-                />
+                <View className="my-6 w-full">
+                    <TextBox
+                        label="Email"
+                        inputName={'email'}
+                        placeholder={'email@connect2mark.com'}
+                        iconName={'email'}
+                        handleChange={setValues}
+                        keyboardType="email-address"
+                        autoCapitalize="none"
+                    />
+                </View>
+                <View className="w-full">
+                    <TextBox
+                        label="Password"
+                        inputName={'password'}
+                        placeholder={'Enter your password here'}
+                        iconName={'security'}
+                        handleChange={setValues}
+                        secureTextEntry={true}
+                    />
+                </View>
                 {!isKeyboardOpen && (
-                    <View className="">
+                    <View className="absolute bottom-10 w-full">
                         <PrimaryButton title={'Login'} handlePress={onPress} />
                         <Text className="mt-2 text-center text-xs">
                             Contact your admin if you do not have an account

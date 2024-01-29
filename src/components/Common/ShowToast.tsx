@@ -12,6 +12,6 @@ export const ShowToast = ({ type, heading, desc }: ShowToastProps) => {
         text1: heading,
         text2: desc,
         position: 'bottom',
-        visibilityTime: 2000,
+        visibilityTime: 1500,
     });
 };

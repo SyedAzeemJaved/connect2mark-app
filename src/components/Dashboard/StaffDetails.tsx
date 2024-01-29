@@ -1,6 +1,6 @@
 import { View, Text, Image } from 'react-native';
 
-import { SetText } from '@utils';
+import { setText } from '@utils';
 
 type StaffDetailsProps = {
     full_name: string;
@@ -30,10 +30,10 @@ export const StaffDetails = ({
                     {email}
                 </Text>
                 <Text className="mt-2 text-lg font-semibold">
-                    {SetText(designation)}
+                    {setText(designation)}
                 </Text>
                 <Text className="-mt-1 text-sm font-light">
-                    {SetText(department)}
+                    {setText(department)}
                 </Text>
             </View>
         </View>

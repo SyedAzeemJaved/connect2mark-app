@@ -19,7 +19,7 @@ export const WelcomeScreen = () => {
                 className="h-full w-full"
             >
                 <View className="flex h-full w-full flex-col items-center justify-start space-y-2 p-6">
-                    <Text className="font-marcellus text-5xl text-primary">
+                    <Text className="font-marcellus text-4xl text-primary">
                         Connect2Mark
                     </Text>
                     <Text className="font-marcellus text-xl text-black">

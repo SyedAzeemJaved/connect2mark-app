@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 
-import { LocationProps } from '@types';
+import { DeviceLocationProps } from '@types';
 
 import * as Location from 'expo-location';
 
 type useLocationReturnProps = {
     success: boolean;
     msg: string;
-    location: LocationProps;
+    location: DeviceLocationProps;
 };
 
 export const useLocation = () => {

@@ -1,1 +1,2 @@
-export * from './SetText';
+export * from './setText';
+export * from './dateTime';
