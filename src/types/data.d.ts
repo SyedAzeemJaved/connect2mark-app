@@ -67,7 +67,7 @@ type ScheduleProps = {
     updated_at_in_utc: string | null;
 };
 
-export type ScheduleInstanceProps = {
+type ScheduleInstanceProps = {
     id: number;
     date: string;
     start_time_in_utc: string;
@@ -84,3 +84,8 @@ export type StaffAttendanceResultProps = {
     attendance_status: 'present' | 'late' | null;
     created_at_in_utc: string | null;
 };
+
+export type StaffAttendanceResultPropsWithClassStatusForTodayClasses =
+    StaffAttendanceResultProps & {
+        class_status: 'current' | 'next' | 'past';
+    };

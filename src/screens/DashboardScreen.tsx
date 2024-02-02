@@ -6,7 +6,6 @@ import { api } from '@constants';
 import { AuthContext } from '@contexts';
 import {
     UserContextProps,
-    ScheduleInstanceProps,
     AttendanceDatesProps,
     StaffAttendanceResultProps,
 } from '@types';
@@ -20,26 +19,29 @@ import {
     ShowToast,
 } from '@components';
 
-// import { useBluetooth, useLocation } from '@hooks';
+import { useBluetooth, useLocation, useClassesToday } from '@hooks';
 
-import { formatDateToApiFormatString } from '@utils';
+import {
+    daysFromToday,
+    daysFromDate,
+    formatDateToApiFormatString,
+} from '@utils';
 
 export const DashboardScreen = () => {
     const { user, handleLogout } = useContext(AuthContext) as UserContextProps;
     // const location = useLocation();
     // const btList = useBluetooth();
+    const { classesToday, handleSetClassesToday, currentClass } =
+        useClassesToday();
 
     const today = new Date();
-    const [classesToday, setClassesToday] = useState<ScheduleInstanceProps[]>(
-        []
-    );
+
     const [attendanceResults, setAttendanceResults] = useState<
         StaffAttendanceResultProps[]
     >([]);
     const [attendanceResultDates, setAttendanceResultDates] =
         useState<AttendanceDatesProps>({
-            // 86400000 - number of milliseconds in a day
-            start_date: new Date(today.getTime() - 3 * 86400000),
+            start_date: daysFromToday(-3),
             end_date: today,
         });
 
@@ -47,20 +49,17 @@ export const DashboardScreen = () => {
         (action: 'forward' | 'backward') => {
             if (action === 'backward') {
                 setAttendanceResultDates({
-                    start_date: new Date(
-                        attendanceResultDates.start_date.getTime() -
-                            1 * 86400000
+                    start_date: daysFromDate(
+                        attendanceResultDates.start_date,
+                        -1
                     ),
-                    end_date: new Date(
-                        attendanceResultDates.end_date.getTime() - 1 * 86400000
-                    ),
+                    end_date: daysFromDate(attendanceResultDates.end_date, -1),
                 });
             } else {
-                const checkDate = new Date(
-                    attendanceResultDates.end_date.getTime() + 1 * 86400000
-                );
-                console.log('i am here');
-                if (today.getTime() < checkDate.getTime()) {
+                if (
+                    today.getTime() <=
+                    daysFromDate(attendanceResultDates.end_date, +1).getTime()
+                ) {
                     ShowToast({
                         type: 'error',
                         heading: 'Oops',
@@ -69,59 +68,31 @@ export const DashboardScreen = () => {
                     return;
                 }
                 setAttendanceResultDates({
-                    start_date: new Date(
-                        attendanceResultDates.start_date.getTime() +
-                            1 * 86400000
+                    start_date: daysFromDate(
+                        attendanceResultDates.start_date,
+                        +1
                     ),
-                    end_date: new Date(
-                        attendanceResultDates.end_date.getTime() + 1 * 86400000
-                    ),
+                    end_date: daysFromDate(attendanceResultDates.end_date, +1),
                 });
             }
         },
         [attendanceResultDates]
     );
 
-    // Agar chal raha ho toh condition laga dena
-    // Waise nahe chalna chahiye
+    // SET INTERVAL
     useEffect(() => {
-        (async () => {
-            console.log('I have been executed again, which is a big NO NO');
+        console.log('Classes changed so I am running');
 
-            try {
-                const headers = new Headers();
-                headers.append('Authorization', `Bearer ${user.token}`);
-                headers.append('accept', 'application/json');
+        // Setting the interval
+        const interval = setInterval(() => {
+            handleSetClassesToday(classesToday);
+        }, 30000);
 
-                const apiResponse = await fetch(api.USERME, {
-                    method: 'GET',
-                    headers,
-                });
+        // Clearing the interval
+        return () => clearTimeout(interval);
+    }, [classesToday]);
 
-                const res = await apiResponse.json();
-
-                if (!apiResponse.ok) throw new Error(res?.detail);
-
-                setClassesToday(res.items);
-
-                ShowToast({
-                    type: 'success',
-                    heading: 'Success',
-                    desc: 'Classes fetched successfully',
-                });
-            } catch (err: any) {
-                ShowToast({
-                    type: 'error',
-                    heading: 'Oops',
-                    desc:
-                        (typeof err?.message === 'string' && err?.message) ||
-                        'Something went wrong',
-                });
-            }
-        })();
-    }, []);
-
-    // Attendance Results
+    // ATTENDANCE RESULT
     useEffect(() => {
         (async () => {
             console.log('Attendance results executed');
@@ -175,8 +146,8 @@ export const DashboardScreen = () => {
                     </View>
                     <View className="w-full">
                         <ClassSchedules
-                            totalClassesCount={4}
-                            totalCompletedCount={2}
+                            classesToday={classesToday}
+                            currentClass={currentClass}
                         />
                     </View>
                     <View className="w-full">

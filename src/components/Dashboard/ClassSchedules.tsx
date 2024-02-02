@@ -1,16 +1,16 @@
 import { View, Text, Image, ImageSourcePropType } from 'react-native';
 
-import { ScheduleInstanceProps } from '@types';
+import {
+    StaffAttendanceResultProps,
+    StaffAttendanceResultPropsWithClassStatusForTodayClasses,
+} from '@types';
 
 import { BoxWithUnderLine, CircleSvg } from '../Common';
 
 const LocationIcon = require('../../../assets/images/location.png');
 const TimeIcon = require('../../../assets/images/time.png');
 
-type ClassSchedulesProps = {
-    totalClassesCount: number;
-    totalCompletedCount: number;
-};
+import { convertToDateFromTime } from '@utils';
 
 type ItemWithIconProps = {
     text: string;
@@ -26,10 +26,35 @@ const ItemWithIcon = ({ text, icon }: ItemWithIconProps) => {
     );
 };
 
+const formatTimeLocal = (t: string): string => {
+    return convertToDateFromTime(t).toString().slice(16, 21);
+};
+
+const returnClassStatusHeading = (
+    currentClass: StaffAttendanceResultPropsWithClassStatusForTodayClasses | null
+): string => {
+    if (!currentClass) {
+        return 'Phew 🥳';
+    }
+    return currentClass.class_status === 'current'
+        ? 'Current'
+        : currentClass.class_status === 'next'
+          ? 'Next Class'
+          : 'Past Class';
+};
+
 export const ClassSchedules = ({
-    totalClassesCount,
-    totalCompletedCount,
-}: ClassSchedulesProps) => {
+    classesToday,
+    currentClass,
+}: {
+    classesToday: StaffAttendanceResultProps[];
+    currentClass: StaffAttendanceResultPropsWithClassStatusForTodayClasses | null;
+}) => {
+    const totalClassesCount = classesToday.length;
+    const totalCompletedCount = classesToday.filter(
+        (c) => c.attendance_status !== null
+    ).length;
+
     return (
         <View className="flex flex-row items-stretch justify-between space-x-6">
             <View className="flex-1">
@@ -61,23 +86,31 @@ export const ClassSchedules = ({
 
             <View className="flex-1">
                 <BoxWithUnderLine
-                    title={'Next Class'}
+                    title={returnClassStatusHeading(currentClass)}
                     children={
-                        <>
-                            <View className="flex flex-col">
-                                <Text className="mb-2 text-sm text-zinc-700">
-                                    Object Oriented Programming
-                                </Text>
-                                <ItemWithIcon
-                                    text="Room GT-05"
-                                    icon={LocationIcon}
-                                />
-                                <ItemWithIcon
-                                    text="09:00 - 11:00"
-                                    icon={TimeIcon}
-                                />
-                            </View>
-                        </>
+                        <View className="flex flex-col">
+                            <Text className="mb-2 text-sm text-zinc-700">
+                                {currentClass
+                                    ? currentClass.schedule_instance.schedule
+                                          .title
+                                    : 'No classes today, sit back and relax!'}
+                            </Text>
+                            {currentClass && (
+                                <>
+                                    <ItemWithIcon
+                                        text={
+                                            currentClass.schedule_instance
+                                                .location.title
+                                        }
+                                        icon={LocationIcon}
+                                    />
+                                    <ItemWithIcon
+                                        text={`${formatTimeLocal(currentClass.schedule_instance.start_time_in_utc)} - ${formatTimeLocal(currentClass.schedule_instance.end_time_in_utc)}`}
+                                        icon={TimeIcon}
+                                    />
+                                </>
+                            )}
+                        </View>
                     }
                 />
             </View>
