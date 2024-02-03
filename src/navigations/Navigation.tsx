@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { AuthContext } from '@contexts';

@@ -30,7 +30,8 @@ import {
 export const DashboardScreen = () => {
     const { user, handleLogout } = useContext(AuthContext) as UserContextProps;
     // const location = useLocation();
-    // const btList = useBluetooth();
+    const startScanning = useBluetooth();
+
     const { classesToday, handleSetClassesToday, currentClass } =
         useClassesToday();
 
@@ -131,6 +132,16 @@ export const DashboardScreen = () => {
             }
         })();
     }, [attendanceResultDates]);
+
+    const test = async () => {
+        startScanning()
+            .then((devices) => {
+                console.log(devices);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
 
     return (
         <AndroidSafeView>
