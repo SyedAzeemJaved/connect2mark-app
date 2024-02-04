@@ -1,46 +1,20 @@
-import { useState, useEffect } from 'react';
-
 import { DeviceLocationProps } from '@types';
 
 import * as Location from 'expo-location';
 
-type useLocationReturnProps = {
-    success: boolean;
-    msg: string;
-    location: DeviceLocationProps;
-};
-
 export const useLocation = () => {
-    const [data, setData] = useState<useLocationReturnProps>({
-        success: false,
-        msg: 'Permission to access location was denied',
-        location: {
-            coords: {
-                accuracy: null,
-                altitude: null,
-                altitudeAccuracy: null,
-                heading: null,
-                latitude: 0,
-                longitude: 0,
-                speed: null,
-            },
-            timestamp: 0,
-        },
-    });
-
-    useEffect(() => {
-        (async () => {
+    const fetchLocation = async (): Promise<DeviceLocationProps> => {
+        console.log('Starting to fetch location');
+        return new Promise(async (resolve, reject) => {
             let { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
-                return;
+                reject('Insufficient permissions to get device location');
             }
-            setData({
-                success: true,
-                msg: 'Location fetched successfully',
-                location: await Location.getCurrentPositionAsync({}),
-            });
-        })();
-    }, []);
+            const location = await Location.getCurrentPositionAsync({});
+            console.log(location);
+            resolve(location);
+        });
+    };
 
-    return data;
+    return fetchLocation;
 };

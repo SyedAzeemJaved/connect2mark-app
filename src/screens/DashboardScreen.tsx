@@ -29,8 +29,8 @@ import {
 
 export const DashboardScreen = () => {
     const { user, handleLogout } = useContext(AuthContext) as UserContextProps;
-    // const location = useLocation();
-    const startScanning = useBluetooth();
+    const getLocation = useLocation();
+    const getDevices = useBluetooth();
 
     const { classesToday, handleSetClassesToday, currentClass } =
         useClassesToday();
@@ -133,15 +133,15 @@ export const DashboardScreen = () => {
         })();
     }, [attendanceResultDates]);
 
-    const test = async () => {
-        startScanning()
-            .then((devices) => {
-                console.log(devices);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    };
+    // const test = async () => {
+    //     getDevices()
+    //         .then((devices) => {
+    //             console.log(devices);
+    //         })
+    //         .catch((err) => {
+    //             console.log(err);
+    //         });
+    // };
 
     return (
         <AndroidSafeView>
@@ -172,7 +172,7 @@ export const DashboardScreen = () => {
                             <Text className="mr-1 text-sm text-black">
                                 Change account?
                             </Text>
-                            <Link title={'Logout'} handlePress={handleLogout} />
+                            <Link title={'Logout'} handlePress={getLocation} />
                         </View>
                     </View>
                 </View>
