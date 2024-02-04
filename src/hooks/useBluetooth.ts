@@ -1,21 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import { BleManager, Device, BleError } from 'react-native-ble-plx';
-
-const _BleManager = new BleManager();
 
 export const useBluetooth = () => {
     const [scannedDevices, setScannedDevices] = useState<string[]>([]);
 
-    useEffect(() => {
-        // Clean up
-        return () => {
-            _BleManager.destroy();
-        };
-    }, []);
-
     const startScanning = (): Promise<string[]> => {
         return new Promise((resolve, reject) => {
+            const _BleManager = new BleManager();
+
             const handleDeviceScan = (
                 error: BleError | null,
                 device: Device | null
@@ -38,12 +31,13 @@ export const useBluetooth = () => {
             const stopScanning = () => {
                 console.log('Scanning has been stopped');
                 _BleManager.stopDeviceScan();
+                _BleManager.destroy();
             };
-
-            console.log('Scanning started');
 
             // Reset the list and start scanning
             setScannedDevices([]);
+
+            console.log('Scanning started');
             _BleManager.startDeviceScan(
                 null,
                 { allowDuplicates: false },
