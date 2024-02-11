@@ -66,6 +66,25 @@ export const useClassesToday = () => {
         );
     };
 
+    const handleSetCurrentClass = ({
+        attendance_status,
+        created_at_in_utc,
+    }: {
+        attendance_status: StaffAttendanceResultPropsWithClassStatusForTodayClasses['attendance_status'];
+        created_at_in_utc: StaffAttendanceResultPropsWithClassStatusForTodayClasses['created_at_in_utc'];
+    }) => {
+        setCurrentClass((prev) => {
+            if (prev) {
+                return {
+                    ...prev,
+                    attendance_status: attendance_status,
+                    created_at_in_utc: created_at_in_utc,
+                };
+            }
+            return prev;
+        });
+    };
+
     useEffect(() => {
         (async () => {
             console.log('I have been executed again, which is a big NO NO');
@@ -108,5 +127,10 @@ export const useClassesToday = () => {
         })();
     }, []);
 
-    return { classesToday, handleSetClassesToday, currentClass };
+    return {
+        classesToday,
+        handleSetClassesToday,
+        currentClass,
+        handleSetCurrentClass,
+    };
 };

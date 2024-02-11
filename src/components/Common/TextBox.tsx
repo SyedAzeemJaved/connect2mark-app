@@ -6,7 +6,6 @@ type Props = {
     label: string;
     inputName: string;
     placeholder: string;
-    iconName: 'email' | 'security';
     handleChange: React.Dispatch<React.SetStateAction<LoginScreenProps>>;
 } & TextInputProps;
 
@@ -14,7 +13,6 @@ export const TextBox = ({
     label,
     inputName,
     placeholder,
-    iconName,
     handleChange,
     ...rest
 }: Props) => {

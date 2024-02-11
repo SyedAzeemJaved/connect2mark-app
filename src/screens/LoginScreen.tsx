@@ -117,24 +117,23 @@ export const LoginScreen = () => {
     return (
         <AndroidSafeView>
             <View className="flex h-full w-full flex-col items-center p-6">
-                <Logo />
-                <View className="my-6 w-full">
+                {!isKeyboardOpen && <Logo />}
+
+                <View className="mb-6 mt-6 w-full">
                     <TextBox
                         label="Email"
                         inputName={'email'}
                         placeholder={'email@connect2mark.com'}
-                        iconName={'email'}
                         handleChange={setValues}
                         keyboardType="email-address"
                         autoCapitalize="none"
                     />
                 </View>
-                <View className="w-full">
+                <View className="mb-6 w-full">
                     <TextBox
                         label="Password"
                         inputName={'password'}
                         placeholder={'Enter your password here'}
-                        iconName={'security'}
                         handleChange={setValues}
                         secureTextEntry={true}
                     />

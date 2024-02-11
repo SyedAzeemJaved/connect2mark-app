@@ -1,4 +1,4 @@
-export const BASE_URL = 'http://192.168.100.65:8000';
+export const BASE_URL = 'http://192.168.100.94:8000';
 export const LOGIN = `${BASE_URL}/token`;
 export const USERME = `${BASE_URL}/common/me`;
 // export const CLASSES_TODAY = `${BASE_URL}/staff/schedule-instances/today?page=1&size=50`;

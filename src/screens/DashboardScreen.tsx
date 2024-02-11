@@ -29,11 +29,16 @@ import {
 
 export const DashboardScreen = () => {
     const { user, handleLogout } = useContext(AuthContext) as UserContextProps;
+
     const getLocation = useLocation();
     const getDevices = useBluetooth();
 
-    const { classesToday, handleSetClassesToday, currentClass } =
-        useClassesToday();
+    const {
+        classesToday,
+        handleSetClassesToday,
+        currentClass,
+        handleSetCurrentClass,
+    } = useClassesToday();
 
     const today = new Date();
 
@@ -133,15 +138,86 @@ export const DashboardScreen = () => {
         })();
     }, [attendanceResultDates]);
 
-    // const test = async () => {
-    //     getDevices()
-    //         .then((devices) => {
-    //             console.log(devices);
-    //         })
-    //         .catch((err) => {
-    //             console.log(err);
-    //         });
-    // };
+    // ATTENDANCE BASED ON CURRENT CLASS
+    useEffect(() => {
+        (async () => {
+            console.log('Trying to mark attendance');
+
+            // Return if there is no class
+            if (!currentClass) {
+                console.log('No class`');
+                return;
+            }
+
+            // Return if attendance has already been marked
+            if (currentClass.attendance_status) {
+                console.log('Attendance has already been marked');
+                return;
+            }
+
+            // Return if class is not 'current', could be 'next' as well
+            if (currentClass.class_status !== 'current') {
+                console.log('Class is not current');
+                return;
+            }
+
+            try {
+                const btDevices = await getDevices();
+                const location = await getLocation();
+
+                // if (
+                //     !btDevices.includes(
+                //         currentClass.schedule_instance.location
+                //             .bluetooth_address
+                //     )
+                // ) {
+                //     console.log('Bluetooth address does not match');
+                //     return;
+                // }
+
+                // if (!location.coords.latitude) {
+                //     console.log('Coordinates do not match');
+                //     return;
+                // }
+
+                const headers = new Headers();
+                headers.append('Authorization', `Bearer ${user.token}`);
+                headers.append('accept', 'application/json');
+
+                const apiResponse = await fetch(
+                    api.MARK_ATTENDANCE +
+                        `/${currentClass.schedule_instance.id}`,
+                    {
+                        method: 'POST',
+                        headers,
+                    }
+                );
+
+                const res = await apiResponse.json();
+
+                if (!apiResponse.ok) throw new Error(res?.detail);
+
+                handleSetCurrentClass({
+                    attendance_status: res.attendance_status,
+                    created_at_in_utc: res.created_at_in_utc,
+                });
+
+                ShowToast({
+                    type: 'success',
+                    heading: 'Success',
+                    desc: 'Attendance marked successfully',
+                });
+            } catch (err: any) {
+                ShowToast({
+                    type: 'error',
+                    heading: 'Oops',
+                    desc:
+                        (typeof err?.message === 'string' && err?.message) ||
+                        'Something went wrong',
+                });
+            }
+        })();
+    }, [currentClass]);
 
     return (
         <AndroidSafeView>
@@ -172,7 +248,7 @@ export const DashboardScreen = () => {
                             <Text className="mr-1 text-sm text-black">
                                 Change account?
                             </Text>
-                            <Link title={'Logout'} handlePress={getLocation} />
+                            <Link title={'Logout'} handlePress={handleLogout} />
                         </View>
                     </View>
                 </View>

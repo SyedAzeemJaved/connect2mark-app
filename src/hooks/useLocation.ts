@@ -11,7 +11,6 @@ export const useLocation = () => {
                 reject('Insufficient permissions to get device location');
             }
             const location = await Location.getCurrentPositionAsync({});
-            console.log(location);
             resolve(location);
         });
     };

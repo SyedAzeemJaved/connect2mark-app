@@ -85,7 +85,6 @@ export type StaffAttendanceResultProps = {
     created_at_in_utc: string | null;
 };
 
-export type StaffAttendanceResultPropsWithClassStatusForTodayClasses =
-    StaffAttendanceResultProps & {
-        class_status: 'current' | 'next' | 'past';
-    };
+export type StaffAttendanceResultPropsWithClassStatusForTodayClasses = {
+    class_status: 'current' | 'next' | 'past';
+} & StaffAttendanceResultProps;
