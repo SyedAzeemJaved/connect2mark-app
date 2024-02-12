@@ -17,7 +17,7 @@ const ErrorMessage = ({ msg }: { msg: string }) => {
     );
 };
 
-export const SecurityContext = createContext<null>(null);
+export const SecurityContext = createContext<string | null>(null);
 
 export const SecurityProvider = ({
     children,
@@ -57,7 +57,7 @@ export const SecurityProvider = ({
     })();
 
     return (
-        <SecurityContext.Provider value={null}>
+        <SecurityContext.Provider value={'SAJ'}>
             {securityData.hasError ? (
                 <ErrorMessage
                     msg={
