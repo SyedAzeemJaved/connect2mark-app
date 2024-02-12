@@ -1,10 +1,9 @@
 import { useState, useEffect, useContext } from 'react';
 import { View, Text, Keyboard } from 'react-native';
 
-import { api } from '@constants';
+import { ApiContext, AuthContext } from '@contexts';
 
-import { AuthContext } from '@contexts';
-import { UserContextProps, LoginScreenProps } from '@types';
+import { ApiContextProps, UserContextProps, LoginScreenProps } from '@types';
 
 import {
     AndroidSafeView,
@@ -16,11 +15,13 @@ import {
 
 export const LoginScreen = () => {
     const { handleUser } = useContext(AuthContext) as UserContextProps;
+    const { handleHost, loginUrl } = useContext(ApiContext) as ApiContextProps;
 
     const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
     const [values, setValues] = useState<LoginScreenProps>({
         email: 't@email.com',
         password: 't@123',
+        host: '',
     });
 
     useEffect(() => {
@@ -39,13 +40,15 @@ export const LoginScreen = () => {
 
     const onPress = async () => {
         try {
-            if (!values.email || !values.password) {
+            if (!values.email || !values.password || !values.host) {
                 throw new Error('Please fill all fields');
             }
 
             if (!values.email.includes('.com') || !values.email.includes('@')) {
                 throw new Error('Invalid email');
             }
+
+            handleHost(values.host);
 
             const params = new URLSearchParams();
             params.append('grant_type', 'password');
@@ -64,7 +67,7 @@ export const LoginScreen = () => {
                 desc: 'Attempting to log in',
             });
 
-            const res = await fetch(api.LOGIN, {
+            const res = await fetch(loginUrl, {
                 method: 'POST',
                 headers,
                 body: params.toString(),
@@ -138,6 +141,16 @@ export const LoginScreen = () => {
                         secureTextEntry={true}
                     />
                 </View>
+                <View className="w-full">
+                    <TextBox
+                        label="Server Host"
+                        inputName={'host'}
+                        placeholder={'Enter your host IP here'}
+                        handleChange={setValues}
+                        keyboardType="email-address"
+                    />
+                </View>
+
                 {!isKeyboardOpen && (
                     <View className="absolute bottom-10 w-full">
                         <PrimaryButton title={'Login'} handlePress={onPress} />

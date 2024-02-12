@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { View, Text, ImageBackground } from 'react-native';
 
 import { AuthContext } from '@contexts';
+
 import { UserContextProps } from '@types';
 
 import { AndroidSafeView, PrimaryButton } from '@components';

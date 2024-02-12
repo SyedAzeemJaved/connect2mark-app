@@ -3,6 +3,7 @@ import { useContext } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { AuthContext } from '@contexts';
+
 import { UserContextProps } from '@types';
 
 import { LoginScreen, DashboardScreen, WelcomeScreen } from '@screens';

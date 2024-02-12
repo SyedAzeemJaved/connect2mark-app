@@ -1,5 +1,6 @@
 import {
     createContext,
+    useContext,
     useCallback,
     useEffect,
     useMemo,
@@ -8,15 +9,17 @@ import {
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { api } from '@constants';
+import { ApiContext } from './Api.context';
 
-import { UserContextProps, UserProps } from '@types';
+import { ApiContextProps, UserContextProps, UserProps } from '@types';
 
 import { ShowToast } from '@components';
 
 export const AuthContext = createContext<UserContextProps | null>(null);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+    const { loginUrl } = useContext(ApiContext) as ApiContextProps;
+
     const [_user, setUser] = useState<UserProps>({
         full_name: '',
         email: '',
@@ -46,7 +49,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                     headers.append('Authorization', `Bearer ${token}`);
                     headers.append('accept', 'application/json');
 
-                    const apiResponse = await fetch(api.USERME, {
+                    const apiResponse = await fetch(loginUrl, {
                         method: 'GET',
                         headers,
                     });

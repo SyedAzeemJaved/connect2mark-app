@@ -1,10 +1,10 @@
 import { useContext, useState, useEffect, useCallback } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 
-import { api } from '@constants';
+import { ApiContext, AuthContext } from '@contexts';
 
-import { AuthContext } from '@contexts';
 import {
+    ApiContextProps,
     UserContextProps,
     AttendanceDatesProps,
     StaffAttendanceResultProps,
@@ -28,6 +28,9 @@ import {
 } from '@utils';
 
 export const DashboardScreen = () => {
+    const { attendanceResultUrl, markAttendanceUrl } = useContext(
+        ApiContext
+    ) as ApiContextProps;
     const { user, handleLogout } = useContext(AuthContext) as UserContextProps;
 
     const getLocation = useLocation();
@@ -109,7 +112,7 @@ export const DashboardScreen = () => {
                 headers.append('accept', 'application/json');
                 headers.append('Content-Type', 'application/json');
 
-                const apiResponse = await fetch(api.ATTENDANCE_RESULT, {
+                const apiResponse = await fetch(attendanceResultUrl, {
                     method: 'POST',
                     headers,
                     body: JSON.stringify({
@@ -185,8 +188,7 @@ export const DashboardScreen = () => {
                 headers.append('accept', 'application/json');
 
                 const apiResponse = await fetch(
-                    api.MARK_ATTENDANCE +
-                        `/${currentClass.schedule_instance.id}`,
+                    markAttendanceUrl + `/${currentClass.schedule_instance.id}`,
                     {
                         method: 'POST',
                         headers,
