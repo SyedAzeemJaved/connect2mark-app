@@ -90,7 +90,7 @@ export const DashboardScreen = () => {
 
     // SET INTERVAL
     useEffect(() => {
-        console.log('Classes changed so I am running');
+        // console.log('Classes changed so I am running');
 
         // Setting the interval
         const interval = setInterval(() => {
@@ -104,7 +104,7 @@ export const DashboardScreen = () => {
     // ATTENDANCE RESULT
     useEffect(() => {
         (async () => {
-            console.log('Attendance results executed');
+            // console.log('Attendance results executed');
 
             try {
                 const headers = new Headers();
@@ -144,23 +144,23 @@ export const DashboardScreen = () => {
     // ATTENDANCE BASED ON CURRENT CLASS
     useEffect(() => {
         (async () => {
-            console.log('Trying to mark attendance');
+            // console.log('Trying to mark attendance');
 
             // Return if there is no class
             if (!currentClass) {
-                console.log('No class`');
+                // console.log('No class`');
                 return;
             }
 
             // Return if attendance has already been marked
             if (currentClass.attendance_status) {
-                console.log('Attendance has already been marked');
+                // console.log('Attendance has already been marked');
                 return;
             }
 
             // Return if class is not 'current', could be 'next' as well
             if (currentClass.class_status !== 'current') {
-                console.log('Class is not current');
+                // console.log('Class is not current');
                 return;
             }
 

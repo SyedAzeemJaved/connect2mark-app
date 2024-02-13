@@ -88,7 +88,7 @@ export const useClassesToday = () => {
 
     useEffect(() => {
         (async () => {
-            console.log('I have been executed again, which is a big NO NO');
+            // console.log('I have been executed again, which is a big NO NO');
 
             try {
                 const headers = new Headers();

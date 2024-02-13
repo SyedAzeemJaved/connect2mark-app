@@ -15,7 +15,7 @@ import {
 
 export const LoginScreen = () => {
     const { handleUser } = useContext(AuthContext) as UserContextProps;
-    const { handleHost, loginUrl } = useContext(ApiContext) as ApiContextProps;
+    const { handleHost } = useContext(ApiContext) as ApiContextProps;
 
     const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
     const [values, setValues] = useState<LoginScreenProps>({
@@ -67,7 +67,9 @@ export const LoginScreen = () => {
                 desc: 'Attempting to log in',
             });
 
-            const res = await fetch(loginUrl, {
+            // This is important
+            // Do not use loginUrl here, it's possible that it has not been loaded till now
+            const res = await fetch(`${values.host}/token`, {
                 method: 'POST',
                 headers,
                 body: params.toString(),

@@ -4,7 +4,7 @@ import * as Location from 'expo-location';
 
 export const useLocation = () => {
     const fetchLocation = async (): Promise<DeviceLocationProps> => {
-        console.log('Starting to fetch location');
+        // console.log('Starting to fetch location');
         return new Promise(async (resolve, reject) => {
             let { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {

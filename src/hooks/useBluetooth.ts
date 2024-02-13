@@ -29,7 +29,7 @@ export const useBluetooth = () => {
             };
 
             const stopScanning = () => {
-                console.log('Scanning has been stopped');
+                // console.log('Scanning has been stopped');
                 _BleManager.stopDeviceScan();
                 _BleManager.destroy();
             };
@@ -37,7 +37,7 @@ export const useBluetooth = () => {
             // Reset the list and start scanning
             setScannedDevices([]);
 
-            console.log('Scanning started');
+            // console.log('Scanning started');
             _BleManager.startDeviceScan(
                 null,
                 { allowDuplicates: false },
