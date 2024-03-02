@@ -1,2 +1,6 @@
 // statusBarStyle and statusBarTranslucent
 // Remove default login details t@email.com and it's password
+
+// refresh after marking attendance
+// ble object destroy - unhandled promise
+// bluetooth mark attendance

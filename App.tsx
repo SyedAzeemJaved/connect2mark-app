@@ -15,32 +15,32 @@ import { Navigation } from '@navigations';
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
-    const [fontsLoaded] = useFonts({
-        Poppins: require('./assets/fonts/Poppins/Poppins-Regular.ttf'),
-        MarcellusSc: require('./assets/fonts/Marcellus_SC/MarcellusSC-Regular.ttf'),
-    });
-    const onLayoutRootView = useCallback(async () => {
-        if (fontsLoaded) {
-            await SplashScreen.hideAsync();
-        }
-    }, [fontsLoaded]);
-
-    if (!fontsLoaded) {
-        return null;
+  const [fontsLoaded] = useFonts({
+    Poppins: require('./assets/fonts/Poppins/Poppins-Regular.ttf'),
+    MarcellusSc: require('./assets/fonts/Marcellus_SC/MarcellusSC-Regular.ttf'),
+  });
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
     }
+  }, [fontsLoaded]);
 
-    return (
-        <GestureHandlerRootView style={{ flex: 1 }}>
-            <SecurityProvider>
-                <ApiProvider>
-                    <AuthProvider>
-                        <NavigationContainer onReady={onLayoutRootView}>
-                            <Navigation />
-                        </NavigationContainer>
-                    </AuthProvider>
-                </ApiProvider>
-            </SecurityProvider>
-            <Toast />
-        </GestureHandlerRootView>
-    );
+  if (!fontsLoaded) {
+    return null;
+  }
+
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SecurityProvider>
+        <ApiProvider>
+          <AuthProvider>
+            <NavigationContainer onReady={onLayoutRootView}>
+              <Navigation />
+            </NavigationContainer>
+          </AuthProvider>
+        </ApiProvider>
+      </SecurityProvider>
+      <Toast />
+    </GestureHandlerRootView>
+  );
 }
