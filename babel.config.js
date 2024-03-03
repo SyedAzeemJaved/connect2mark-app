@@ -9,6 +9,7 @@ module.exports = function (api) {
         {
           alias: {
             '@components': './src/components/index.ts',
+            '@constants': './src/constants/index.ts',
             '@contexts': './src/contexts/index.ts',
             '@hooks': './src/hooks/index.ts',
             '@navigations': './src/navigations/index.ts',

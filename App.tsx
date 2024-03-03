@@ -8,7 +8,7 @@ import { useFonts } from 'expo-font';
 
 import Toast from 'react-native-toast-message';
 
-import { ApiProvider, AuthProvider, SecurityProvider } from '@contexts';
+import { AuthProvider } from '@contexts';
 
 import { Navigation } from '@navigations';
 
@@ -31,15 +31,11 @@ export default function App() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <SecurityProvider>
-        <ApiProvider>
-          <AuthProvider>
-            <NavigationContainer onReady={onLayoutRootView}>
-              <Navigation />
-            </NavigationContainer>
-          </AuthProvider>
-        </ApiProvider>
-      </SecurityProvider>
+      <AuthProvider>
+        <NavigationContainer onReady={onLayoutRootView}>
+          <Navigation />
+        </NavigationContainer>
+      </AuthProvider>
       <Toast />
     </GestureHandlerRootView>
   );

@@ -1,9 +1,10 @@
 import { useEffect, useState, useContext } from 'react';
 
-import { ApiContext, AuthContext } from '@contexts';
+import { AuthContext } from '@contexts';
+
+import { constants } from '@constants';
 
 import {
-  ApiContextProps,
   UserContextProps,
   StaffAttendanceResultProps,
   StaffAttendanceResultPropsWithClassStatusForTodayClasses,
@@ -18,7 +19,6 @@ import {
 } from '@utils';
 
 export const useClassesToday = () => {
-  const { attendanceResultUrl } = useContext(ApiContext) as ApiContextProps;
   const { user } = useContext(AuthContext) as UserContextProps;
 
   const [classesToday, setClassesToday] = useState<
@@ -84,7 +84,7 @@ export const useClassesToday = () => {
         headers.append('accept', 'application/json');
         headers.append('Content-Type', 'application/json');
 
-        const apiResponse = await fetch(attendanceResultUrl, {
+        const apiResponse = await fetch(constants.ATTENDANCE_RESULT, {
           method: 'POST',
           headers,
           body: JSON.stringify({

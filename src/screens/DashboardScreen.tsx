@@ -1,9 +1,11 @@
 import { useContext, useEffect } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 
-import { ApiContext, AuthContext } from '@contexts';
+import { AuthContext } from '@contexts';
 
-import { ApiContextProps, UserContextProps } from '@types';
+import { constants } from '@constants';
+
+import { UserContextProps } from '@types';
 
 import {
   AndroidSafeView,
@@ -19,7 +21,6 @@ import { useBluetooth, useLocation, useClassesToday } from '@hooks';
 import { distanceInMeters } from '@utils';
 
 export const DashboardScreen = () => {
-  const { markAttendanceUrl } = useContext(ApiContext) as ApiContextProps;
   const { user, handleLogout } = useContext(AuthContext) as UserContextProps;
 
   const getLocation = useLocation();
@@ -98,7 +99,7 @@ export const DashboardScreen = () => {
           headers.append('accept', 'application/json');
 
           const apiResponse = await fetch(
-            markAttendanceUrl + `/${currentClass.schedule_instance.id}`,
+            constants.MARK_ATTENDANCE + `/${currentClass.schedule_instance.id}`,
             {
               method: 'POST',
               headers,

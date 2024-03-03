@@ -1,10 +1,11 @@
 import { useEffect, useState, useContext } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 
-import { ApiContext, AuthContext } from '@contexts';
+import { AuthContext } from '@contexts';
+
+import { constants } from '@constants';
 
 import {
-  ApiContextProps,
   UserContextProps,
   StaffAttendanceResultProps,
   AttendanceDatesProps,
@@ -77,7 +78,6 @@ export const AttendanceResults = ({
 }: {
   classesToday: StaffAttendanceResultProps[];
 }) => {
-  const { attendanceResultUrl } = useContext(ApiContext) as ApiContextProps;
   const { user } = useContext(AuthContext) as UserContextProps;
 
   const [dates, setDate] = useState<AttendanceDatesProps>({
@@ -118,7 +118,7 @@ export const AttendanceResults = ({
         headers.append('accept', 'application/json');
         headers.append('Content-Type', 'application/json');
 
-        const apiResponse = await fetch(attendanceResultUrl, {
+        const apiResponse = await fetch(constants.ATTENDANCE_RESULT, {
           method: 'POST',
           headers,
           body: JSON.stringify({

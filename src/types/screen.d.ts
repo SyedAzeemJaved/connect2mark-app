@@ -1,7 +1,6 @@
 export type LoginScreenProps = {
   email: string;
   password: string;
-  host: string;
 };
 
 export type AttendanceDatesProps = {

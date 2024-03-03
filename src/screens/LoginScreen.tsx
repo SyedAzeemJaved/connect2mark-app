@@ -1,9 +1,11 @@
 import { useState, useEffect, useContext } from 'react';
 import { View, Text, Keyboard } from 'react-native';
 
-import { ApiContext, AuthContext } from '@contexts';
+import { AuthContext } from '@contexts';
 
-import { ApiContextProps, UserContextProps, LoginScreenProps } from '@types';
+import { constants } from '@constants';
+
+import { UserContextProps, LoginScreenProps } from '@types';
 
 import {
   AndroidSafeView,
@@ -15,13 +17,11 @@ import {
 
 export const LoginScreen = () => {
   const { handleUser } = useContext(AuthContext) as UserContextProps;
-  const { handleHost } = useContext(ApiContext) as ApiContextProps;
 
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
   const [values, setValues] = useState<LoginScreenProps>({
     email: '',
     password: '',
-    host: '',
   });
 
   useEffect(() => {
@@ -40,15 +40,13 @@ export const LoginScreen = () => {
 
   const onPress = async () => {
     try {
-      if (!values.email || !values.password || !values.host) {
+      if (!values.email || !values.password) {
         throw new Error('Please fill all fields');
       }
 
       if (!values.email.includes('.com') || !values.email.includes('@')) {
         throw new Error('Invalid email');
       }
-
-      handleHost(values.host);
 
       const params = new URLSearchParams();
       params.append('grant_type', 'password');
@@ -69,7 +67,7 @@ export const LoginScreen = () => {
 
       // This is important
       // Do not use loginUrl here, it's possible that it has not been loaded till now
-      const res = await fetch(`${values.host}/token`, {
+      const res = await fetch(constants.TOKEN, {
         method: 'POST',
         headers,
         body: params.toString(),
@@ -140,15 +138,6 @@ export const LoginScreen = () => {
             placeholder={'Enter your password here'}
             handleChange={setValues}
             secureTextEntry={true}
-          />
-        </View>
-        <View className="w-full">
-          <TextBox
-            label="Server Host"
-            inputName={'host'}
-            placeholder={'Enter your host IP here'}
-            handleChange={setValues}
-            keyboardType="email-address"
           />
         </View>
 
