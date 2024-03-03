@@ -22,7 +22,6 @@ const Bar = ({ date, percentage }: GraphProps) => {
     <View className="flex h-full w-1/5 flex-col items-center justify-between">
       <View className="flex h-[90%] w-full flex-col justify-end rounded-xl bg-zinc-200">
         <View
-          // className={`h-[${percentage}%] w-full bg-[#333D55] ${percentage === 100 ? 'rounded-xl' : 'rounded-b-xl'}`}
           className={`w-full bg-[#333D55] ${percentage === 100 ? 'rounded-xl' : 'rounded-b-xl'}`}
           style={{
             height: `${percentage}%`,

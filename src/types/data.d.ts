@@ -48,6 +48,7 @@ export type DeviceLocationProps = {
 export type LocationProps = {
   id: number;
   title: string;
+  coordinates: string;
   bluetooth_address: string;
   created_at_in_utc: string;
   updated_at_in_utc: string | null;
