@@ -43,12 +43,6 @@ export const useClassesToday = () => {
           item.schedule_instance.end_time_in_utc
         );
 
-        // console.log({
-        //     start: startDateTime,
-        //     end: endDateTime,
-        //     class_status: returnClassStatus(startDateTime, endDateTime),
-        // });
-
         return {
           ...item,
           class_status: returnClassStatus(startDateTime, endDateTime),
@@ -82,10 +76,8 @@ export const useClassesToday = () => {
     });
   };
 
-  useEffect(() => {
+  const fetchClassesToday = () => {
     (async () => {
-      // console.log('I have been executed again, which is a big NO NO');
-
       try {
         const headers = new Headers();
         headers.append('Authorization', `Bearer ${user.token}`);
@@ -122,6 +114,10 @@ export const useClassesToday = () => {
         });
       }
     })();
+  };
+
+  useEffect(() => {
+    fetchClassesToday();
   }, []);
 
   return {
@@ -129,5 +125,6 @@ export const useClassesToday = () => {
     handleSetClassesToday,
     currentClass,
     handleSetCurrentClass,
+    fetchClassesToday,
   };
 };

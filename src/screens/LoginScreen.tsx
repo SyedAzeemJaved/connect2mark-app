@@ -19,9 +19,9 @@ export const LoginScreen = () => {
 
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
   const [values, setValues] = useState<LoginScreenProps>({
-    email: 't@email.com',
-    password: 't@123',
-    host: 'http://192.168.0.114:8000',
+    email: '',
+    password: '',
+    host: '',
   });
 
   useEffect(() => {
