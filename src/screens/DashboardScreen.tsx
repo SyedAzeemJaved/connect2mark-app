@@ -48,33 +48,38 @@ export const DashboardScreen = () => {
 
   useEffect(() => {
     (async () => {
-      if (!currentClass) {
-        // console.log('No class');
-        return;
-      }
-
-      const headers = new Headers();
-      headers.append('Authorization', `Bearer ${user.token}`);
-      headers.append('accept', 'application/json');
-
-      const res = await fetch(
-        constants.MARK_ATTENDANCE_TRACKING +
-          `/${currentClass.schedule_instance.id}`,
-        {
-          method: 'POST',
-          headers,
+      try {
+        if (!currentClass) {
+          // console.log('No class');
+          return;
         }
-      );
 
-      if (!res.ok) return;
+        const headers = new Headers();
+        headers.append('Authorization', `Bearer ${user.token}`);
+        headers.append('accept', 'application/json');
 
-      ShowToast({
-        type: 'success',
-        heading: 'Success',
-        desc: 'Tracking attendance successfully',
-      });
+        const res = await fetch(
+          constants.MARK_ATTENDANCE_TRACKING +
+            `/${currentClass.schedule_instance.id}`,
+          {
+            method: 'POST',
+            headers,
+          }
+        );
+
+        if (!res.ok) {
+          s;
+          throw new Error('Can not mark tracking result');
+        }
+
+        ShowToast({
+          type: 'success',
+          heading: 'Success',
+          desc: 'Tracking attendance successfully',
+        });
+      } catch (err: unknown) {}
     })();
-  }, []);
+  }, [currentClass]);
 
   // ATTENDANCE BASED ON CURRENT CLASS
   useEffect(() => {
