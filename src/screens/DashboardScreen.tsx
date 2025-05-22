@@ -46,6 +46,36 @@ export const DashboardScreen = () => {
     return () => clearTimeout(interval);
   }, [classesToday]);
 
+  useEffect(() => {
+    (async () => {
+      if (!currentClass) {
+        // console.log('No class');
+        return;
+      }
+
+      const headers = new Headers();
+      headers.append('Authorization', `Bearer ${user.token}`);
+      headers.append('accept', 'application/json');
+
+      const res = await fetch(
+        constants.MARK_ATTENDANCE_TRACKING +
+          `/${currentClass.schedule_instance.id}`,
+        {
+          method: 'POST',
+          headers,
+        }
+      );
+
+      if (!res.ok) return;
+
+      ShowToast({
+        type: 'success',
+        heading: 'Success',
+        desc: 'Tracking attendance successfully',
+      });
+    })();
+  }, []);
+
   // ATTENDANCE BASED ON CURRENT CLASS
   useEffect(() => {
     (async () => {
@@ -98,6 +128,15 @@ export const DashboardScreen = () => {
           headers.append('Authorization', `Bearer ${user.token}`);
           headers.append('accept', 'application/json');
 
+          // await fetch(
+          //   constants.MARK_ATTENDANCE_TRACKING +
+          //     `/${currentClass.schedule_instance.id}`,
+          //   {
+          //     method: 'POST',
+          //     headers,
+          //   }
+          // );
+
           const apiResponse = await fetch(
             constants.MARK_ATTENDANCE + `/${currentClass.schedule_instance.id}`,
             {
@@ -108,7 +147,9 @@ export const DashboardScreen = () => {
 
           const res = await apiResponse.json();
 
-          if (!apiResponse.ok) throw new Error(res?.detail);
+          if (!apiResponse.ok) {
+            throw new Error(res?.detail);
+          }
 
           handleSetCurrentClass({
             attendance_status: res.attendance_status,

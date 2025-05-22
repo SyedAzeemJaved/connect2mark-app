@@ -21,7 +21,7 @@ export const WelcomeScreen = () => {
       >
         <View className="flex h-full w-full flex-col items-center justify-start space-y-2 p-6">
           <Text className="font-marcellus text-4xl text-primary">
-            Connect2Mark
+            SafeCheck
           </Text>
           <Text className="font-marcellus text-xl text-black">
             Mobile Application

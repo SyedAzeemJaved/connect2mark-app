@@ -1,6 +1,6 @@
 export const setText = (text: string) => {
   if (!text) {
-    return 'HAHA';
+    return '';
   }
 
   // Replace underscores with spaces and convert to title case

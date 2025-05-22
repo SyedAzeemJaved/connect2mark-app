@@ -76,6 +76,8 @@ export const LoginScreen = () => {
       const response = await res.json();
 
       if (!res.ok) {
+        console.log(res);
+
         throw new Error('Invalid credentials');
       }
 
@@ -125,7 +127,7 @@ export const LoginScreen = () => {
           <TextBox
             label="Email"
             inputName={'email'}
-            placeholder={'email@connect2mark.com'}
+            placeholder={'email@safecheck.com'}
             handleChange={setValues}
             keyboardType="email-address"
             autoCapitalize="none"

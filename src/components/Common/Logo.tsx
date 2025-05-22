@@ -9,7 +9,7 @@ export const Logo = () => {
         className="h-20 w-20"
       />
       <Text className="mt-4 font-marcellus text-4xl text-primary">
-        Connect2Mark
+        SafeCheck
       </Text>
     </View>
   );
